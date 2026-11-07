@@ -1,4 +1,4 @@
-# AI Poet Lab · GitHub 仓库创建与推送脚本（一次性工具）
+﻿# AI Poet Lab · GitHub 仓库创建与推送脚本（一次性工具）
 # 用法：powershell -File scripts/publish-github.ps1 -Token <gh_pat>
 # 不传 Token 时回退读 $env:TEMP\gh_token4.txt
 param(
@@ -55,7 +55,8 @@ Push-Location $RepoPath
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 git config http.postBuffer 524288000
 $remoteName = "origin"
-git remote remove $remoteName 2>$null
+$existing = @(& git remote)
+if ($existing -contains $remoteName) { git remote remove $remoteName }
 git remote add $remoteName "https://$($user.login):$Token@github.com/$($user.login)/$RepoName.git"
 git push -u $remoteName main
 git remote set-url $remoteName "https://github.com/$($user.login)/$RepoName.git"

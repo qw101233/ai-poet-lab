@@ -50,6 +50,8 @@ ai-poet-lab/
 │   └── app.js              # 主应用逻辑（交互+朗读+收藏+动画）
 ├── scripts/
 │   ├── make-intro.js       # 9:16 介绍图文合成脚本（sharp）
+│   ├── verify-engine.mjs   # 引擎格律自检脚本（node scripts/verify-engine.mjs）
+│   ├── smoke-test.cjs      # 浏览器冒烟测试（Playwright，一次性）
 │   └── publish-github.ps1  # GitHub 仓库创建与推送脚本
 ├── PROJECT_INFO.md         # 本文档（AI 可读说明）
 ├── README.md               # GitHub README
