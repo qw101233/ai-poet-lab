@@ -1,0 +1,21 @@
+# 依赖
+node_modules/
+package-lock.json
+
+# 构建产物
+dist/
+build/
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# 日志
+*.log
+npm-debug.log*
+
+# Playwright 临时文件
+.playwright-cli/

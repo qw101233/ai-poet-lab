@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Poet Lab · AI 智能诗歌实验室</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+</head>
+<body>
+    <!-- 背景粒子画布 -->
+    <canvas id="bgCanvas"></canvas>
+
+    <!-- 主体容器 -->
+    <div id="app">
+        <!-- 顶部导航 -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">墨</span>
+                <div class="logo-text">
+                    <h1>AI Poet Lab</h1>
+                    <p>AI 智能诗歌实验室</p>
+                </div>
+            </div>
+            <nav class="nav">
+                <button class="nav-btn active" data-view="create">创作</button>
+                <button class="nav-btn" data-view="collection">收藏</button>
+                <button class="nav-btn" data-view="about">关于</button>
+            </nav>
+        </header>
+
+        <!-- 创作视图 -->
+        <section id="view-create" class="view active">
+            <div class="create-panel">
+                <!-- 左侧：输入面板 -->
+                <div class="input-panel">
+                    <h2>🎨 诗歌创作台</h2>
+                    <div class="form-group">
+                        <label>主题关键词</label>
+                        <input type="text" id="topicInput" placeholder="例如：月光、秋叶、思念..." value="月光">
+                    </div>
+                    <div class="form-group">
+                        <label>情感基调</label>
+                        <div class="emotion-chips" id="emotionChips">
+                            <button class="chip active" data-emotion="思乡">思乡</button>
+                            <button class="chip" data-emotion="离别">离别</button>
+                            <button class="chip" data-emotion="壮志">壮志</button>
+                            <button class="chip" data-emotion="爱情">爱情</button>
+                            <button class="chip" data-emotion="田园">田园</button>
+                            <button class="chip" data-emotion="咏物">咏物</button>
+                            <button class="chip" data-emotion="感怀">感怀</button>
+                            <button class="chip" data-emotion="豪放">豪放</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>诗歌风格</label>
+                        <div class="style-cards" id="styleCards">
+                            <div class="style-card active" data-style="tangshi">
+                                <span class="style-icon">📜</span>
+                                <span class="style-name">唐诗</span>
+                                <span class="style-desc">五言/七言绝句</span>
+                            </div>
+                            <div class="style-card" data-style="songci">
+                                <span class="style-icon">🎵</span>
+                                <span class="style-name">宋词</span>
+                                <span class="style-desc">长短句词牌</span>
+                            </div>
+                            <div class="style-card" data-style="modern">
+                                <span class="style-icon">✨</span>
+                                <span class="style-name">现代诗</span>
+                                <span class="style-desc">自由体新诗</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-generate" id="btnGenerate">
+                        <span class="btn-icon">✍️</span>
+                        <span>开始创作</span>
+                    </button>
+                </div>
+
+                <!-- 右侧：输出面板 -->
+                <div class="output-panel">
+                    <div class="output-header">
+                        <h2>📜 作品展示</h2>
+                        <div class="poem-meta" id="poemMeta"></div>
+                    </div>
+                    <div class="poem-display" id="poemDisplay">
+                        <div class="poem-empty">
+                            <div class="empty-icon">🖌️</div>
+                            <p>输入主题，选择风格</p>
+                            <p class="empty-hint">AI 将为你创作独一无二的诗篇</p>
+                        </div>
+                    </div>
+                    <div class="poem-actions" id="poemActions" style="display:none;">
+                        <button class="action-btn" id="btnRead">🔊 朗读</button>
+                        <button class="action-btn" id="btnImage">🖼️ 配图</button>
+                        <button class="action-btn" id="btnRegenerate">🔄 重写</button>
+                        <button class="action-btn" id="btnSave">⭐ 收藏</button>
+                        <button class="action-btn" id="btnCopy">📋 复制</button>
+                    </div>
+                    <!-- 意境配图画布 -->
+                    <div class="image-container" id="imageContainer" style="display:none;">
+                        <canvas id="poemImage" width="400" height="300"></canvas>
+                        <button class="btn-download-img" id="btnDownloadImg">⬇️ 下载配图</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 收藏视图 -->
+        <section id="view-collection" class="view">
+            <div class="collection-panel">
+                <h2>⭐ 我的收藏</h2>
+                <div class="collection-stats" id="collectionStats"></div>
+                <div class="collection-list" id="collectionList">
+                    <div class="empty-collection">
+                        <div class="empty-icon">📦</div>
+                        <p>暂无收藏作品</p>
+                        <p class="empty-hint">创作诗歌后点击收藏即可保存</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 关于视图 -->
+        <section id="view-about" class="view">
+            <div class="about-panel">
+                <h2>📖 关于 AI Poet Lab</h2>
+                <div class="about-content">
+                    <div class="about-card">
+                        <h3>什么是 AI Poet Lab？</h3>
+                        <p>AI Poet Lab 是一个基于浏览器的智能诗歌创作实验室。它内置了基于意象组合与韵律约束的诗歌生成引擎，能够根据用户输入的主题和情感，实时生成唐诗、宋词和现代诗三种风格的诗歌作品。</p>
+                    </div>
+                    <div class="about-card">
+                        <h3>核心特性</h3>
+                        <ul>
+                            <li>🎭 三种诗歌风格：唐诗绝句、宋词长短句、现代自由诗</li>
+                            <li>🌈 八种情感基调：思乡、离别、壮志、爱情、田园、咏物、感怀、豪放</li>
+                            <li>🔊 Web Speech API 诗歌朗读</li>
+                            <li>🖼️ Canvas 意境配图生成</li>
+                            <li>⭐ 本地收藏管理</li>
+                            <li>🎨 水墨中国风界面设计</li>
+                        </ul>
+                    </div>
+                    <div class="about-card">
+                        <h3>技术实现</h3>
+                        <p>纯前端实现（HTML + CSS + JavaScript），零外部依赖，开箱即用。诗歌生成引擎基于意象库、韵律库和句式模板的组合算法，每首诗都是独一无二的。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Toast 提示 -->
+    <div class="toast" id="toast"></div>
+
+    <!-- 朗读进度条 -->
+    <div class="reading-progress" id="readingProgress" style="display:none;">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <span class="progress-text" id="progressText">朗读中...</span>
+        <button class="btn-stop-read" id="btnStopRead">⏹ 停止</button>
+    </div>
+
+    <script src="js/poem-engine.js"></script>
+    <script src="js/image-generator.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

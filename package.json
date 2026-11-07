@@ -1,0 +1,29 @@
+{
+  "name": "ai-poet-lab",
+  "version": "1.0.0",
+  "description": "AI 智能诗歌实验室 —— 输入主题与情感，一键生成唐诗、宋词与现代诗，并自动绘制水墨意境配图",
+  "keywords": [
+    "poetry",
+    "poem-generator",
+    "chinese-poetry",
+    "tangshi",
+    "songci",
+    "canvas",
+    "web-speech-api",
+    "vanilla-js"
+  ],
+  "license": "MIT",
+  "author": "qw101233",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qw101233/ai-poet-lab.git"
+  },
+  "scripts": {
+    "start": "npx serve .",
+    "serve": "npx serve . -l 8080",
+    "assets": "node scripts/make-intro.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
+  }
+}
